@@ -10,7 +10,7 @@ router.post("/login", loginUser);
 
 
 router.get("/me", protect, (req, res) => {
-    res.json({message: "User Profile", user: req.user});
+    res.json({message: "User Profile", user: req.user}); 
 });
 
 router.get("/hr-only", protect, roleMiddleware(["HR"]), (req, res) => {
