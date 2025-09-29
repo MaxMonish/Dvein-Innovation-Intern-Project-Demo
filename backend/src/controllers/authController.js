@@ -63,4 +63,4 @@ const loginUser = async (req, res) => {
     }   
 };
 
-module.exports = {registerUSer, loginUser};
+module.exports = {registerUser, loginUser};

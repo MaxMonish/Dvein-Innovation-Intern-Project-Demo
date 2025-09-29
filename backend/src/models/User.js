@@ -17,7 +17,7 @@ const userSchema=new mongoose.Schema(
             required: [true, "Please enter your password"]
         },
         role: {
-            role: String,
+            type: String,
             enum: ["HR", "Employee"],
             required: true,
             default: "Employee"
