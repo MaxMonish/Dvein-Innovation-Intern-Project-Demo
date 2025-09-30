@@ -9,11 +9,11 @@ router.post("/register", registerUser);
 router.post("/login", loginUser);
 
 
-router.get("/me", protect, (req, res) => {
+router.get("/me", protect,roleMiddleware(["HR"]), (req, res) => {
     res.json({message: "User Profile", user: req.user}); 
 });
 
-router.get("/hr-only", protect, roleMiddleware(["HR"]), (req, res) => {
+router.get("/hr-only", protect,  (req, res) => {
     res.json({message: "Welcome HR, only you can access this"});
 });
 
