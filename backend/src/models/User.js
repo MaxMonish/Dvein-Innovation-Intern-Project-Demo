@@ -13,11 +13,11 @@ const userSchema=new mongoose.Schema(
             trim: true
         },
         password: {
-            type: [String, Number],
+            type: String,
             required: [true, "Please enter your password"]
         },
         role: {
-            role: String,
+            type: String,
             enum: ["HR", "Employee"],
             required: true,
             default: "Employee"
