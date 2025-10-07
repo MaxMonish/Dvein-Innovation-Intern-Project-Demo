@@ -1,12 +1,26 @@
-const user=require("../models/User");
+const User=require("../models/User");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
-const User = require("../models/User");
 
-const generateToken = (id, role) => {
-    return jwt.sign({id, role}, process.env.JWT_SECRET, {
-        expiresIn: "24h",
+const generateToken = (user, res) => {
+    const token = jwt.sign(
+        {
+            id: user._id,
+            email: user.email,
+            role: user.role
+        },
+        process.env.JWT_SECRET,
+        {expiresIn: "24h"}
+    );
+
+    res.cookie("token", token, {
+        httpOnly: true,
+        secure: process.env.NODE_ENV === "production",
+        sameSite: "Strict",
+        maxAge: 24*60*60*1000 
     });
+
+    return token;
 };
 
 const registerUser = async (req, res) => {
@@ -28,35 +42,42 @@ const registerUser = async (req, res) => {
         });
 
         res.status(201).json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: generateToken(user._id, user.role)
-        });
-    }catch(err){
-        res.status(500).json({message: "Server error", error: err.message});
-    }
-};
+            message: "User registered successfully", 
+            user: {
+                name: user.name, 
+                email: user.email, 
+                role: user.role
+            }});
+        }catch(err){
+            res.status(500).json({message: "Server error", error: err.message});
+        }
+    };
 
 const loginUser = async (req, res) => {
     try{
         const {email, password} = req.body;
 
         const user = await User.findOne({email});
-        if (!user) return res.status(400).json({message: "Invalid Credentials"});
+        if (!user){
+            return res.status(400).json({message: "Invalid Credentials, User not Found"});
+        }
 
         const isMatch = await bcrypt.compare(String(password), String(user.password));
         if(!isMatch){
-            return res.status(400).json({message: "Invalid Credentials"});
+            return res.status(400).json({message: "Invalid Password"});
         }
         
+        const token = generateToken(user, res);
+
         res.json({
-            _id: user._id,
-            name: user.name,
-            email: user.email,
-            role: user.role,
-            token: generateToken(user._id, user.role),
+            message: "Login successful",
+            user: {
+                _id: user._id,
+                name: user.name,
+                email: user.email,
+                role: user.role,
+                token
+            }
         });
     }catch(err){
         res.status(500).json({message: "Server error", error: err.message});

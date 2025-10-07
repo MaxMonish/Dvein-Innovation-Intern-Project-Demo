@@ -1,7 +1,7 @@
-const roleMiddleware = (roles) => {
+const roleMiddleware = (allowedRoles) => {
     return (req, res, next) => {
-        if(!roles.includes(req.user.role)){
-            return res.status(403).json({message: "Access Denied! - Insufficient role"});
+        if(!req.user || !allowedRoles.includes(req.user.role)){
+            return res.status(403).json({message: "Access Denied! - You are not authorized to view this page"});
         }
         next();
     };

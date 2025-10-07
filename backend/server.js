@@ -1,16 +1,17 @@
-// backend/server.js
 const express=require("express");
 const dotenv=require("dotenv")
 const http=require("http");
 const app=require("./app");
 const connectDB=require("../backend/src/config/db");
+const cookieParser=require("cookie-parser");
+const cors=require("cors");
 require("dotenv").config();
 
 dotenv.config();
 connectDB();
 
-
 app.use(express.json());
+app.use(cookieParser());
 
 const authRoutes=require("../backend/src/routes/authRoutes");
 
