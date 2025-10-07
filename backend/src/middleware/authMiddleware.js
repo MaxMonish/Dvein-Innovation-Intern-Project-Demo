@@ -27,7 +27,7 @@ const protect = async (req, res, next) => {
 
     } catch (err){
         console.error("JWT Error: ", err.message);
-        res.status(401).json({message: "Not authorized, token failed"});
+        res.status(401).json({message: "Not authorized - Session expired"});
     }
 };
 

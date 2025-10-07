@@ -17,7 +17,7 @@ const generateToken = (user, res) => {
     res.cookie("token", token, {
         httpOnly: true,
         secure: false,
-        sameSite: "Strict",
+        sameSite: "none",
         maxAge: 24*60*60*1000 
     });
 
@@ -50,7 +50,7 @@ const registerUser = async (req, res) => {
                 role: user.role
             }});
         }catch(err){
-            res.status(500).json({message: "Server error", error: err.message});
+            res.status(500).json({message: "User not Register, Try again", error: err.message});
         }
     };
 
@@ -81,7 +81,7 @@ const loginUser = async (req, res) => {
             }
         });
     }catch(err){
-        res.status(500).json({message: "Server error", error: err.message});
+        res.status(500).json({message: "Login Failed - Try again", error: err.message});
     }   
 };
 
