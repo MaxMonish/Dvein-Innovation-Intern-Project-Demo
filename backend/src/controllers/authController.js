@@ -1,4 +1,4 @@
-// controllers/authController.js
+// controller
 const User=require("../models/User");
 const bcrypt=require("bcryptjs");
 const jwt=require("jsonwebtoken");
@@ -16,7 +16,7 @@ const generateToken = (user, res) => {
 
     res.cookie("token", token, {
         httpOnly: true,
-        secure: process.env.NODE_ENV === "production",
+        secure: false,
         sameSite: "Strict",
         maxAge: 24*60*60*1000 
     });
