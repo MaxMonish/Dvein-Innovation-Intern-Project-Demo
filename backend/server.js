@@ -13,6 +13,12 @@ connectDB();
 app.use(express.json());
 app.use(cookieParser());
 
+//Summa
+app.use(cors({
+    origin: "http://localhost:3000",
+    credentials: true,
+}));
+
 const authRoutes=require("../backend/src/routes/authRoutes");
 
 app.use("/api/auth", authRoutes);
