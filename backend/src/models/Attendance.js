@@ -1,31 +1,32 @@
 const mongoose=require("mongoose");
-const User = require("./User");
+const User=require("./User");
+const Task=require("./Task");
 
-const attendenceSchema= mongoose.Schema(
+const attendanceSchema= mongoose.Schema(
     {
         name:{
-            type:String,
+            type: String,
             required: true,
             trim: true
         },
         id:{
-            type:mongoose.Schema.Types.ObjectId,
+            type: mongoose.Schema.Types.ObjectId,
             required: true,
-            unique:true,
-            ref:"User"
+            unique: true,
+            ref: "User"
         },
         date:{
-            type:Number,
+            type: Date,
             required: true
         },
         status:{
-            type:String,
-            enum:["present","absent"],
+            type: String,
+            enum:["present", "absent"],
             required:true
         },
         inTime:{
-            type:String,   
-            required:true,
+            type: String,   
+            required: true,
             timestamps: true
         },
         outTime:{
@@ -37,4 +38,4 @@ const attendenceSchema= mongoose.Schema(
 );
 
 
-module.exports=mongoose.model(attendenceSchema);
+module.exports=mongoose.model(attendanceSchema);
