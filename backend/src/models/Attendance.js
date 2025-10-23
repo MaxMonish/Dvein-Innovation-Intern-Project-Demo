@@ -1,8 +1,8 @@
-const mongoose=require("mongoose");
-const User=require("./User");
-const Task=require("./Task");
+const mongoose = require("mongoose");
+const User = require("./User");
+const Task = require("./Task");
 
-const attendanceSchema= mongoose.Schema(
+const attendanceSchema = mongoose.Schema(
     {
         name:{
             type: String,
@@ -33,9 +33,9 @@ const attendanceSchema= mongoose.Schema(
             type: String,
             required: true,
             timestamps:true
-        },
-    },
+        }
+    }
 );
 
 
-module.exports=mongoose.model(attendanceSchema);
+module.exports = mongoose.model("Attendance", attendanceSchema);

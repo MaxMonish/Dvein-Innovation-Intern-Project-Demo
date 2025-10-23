@@ -1,7 +1,6 @@
-// controller
-const User=require("../models/User");
-const bcrypt=require("bcryptjs");
-const jwt=require("jsonwebtoken");
+const User = require("../models/User");
+const bcrypt = require("bcryptjs");
+const jwt = require("jsonwebtoken");
 
 const generateToken = (user, res) => {
     const token = jwt.sign(

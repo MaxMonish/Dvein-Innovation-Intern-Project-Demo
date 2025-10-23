@@ -1,9 +1,9 @@
-const express=require("express");
-const {registerUser, loginUser}=require("../controllers/authController");
-const {protect}=require("../middleware/authMiddleware");
-const roleMiddleware=require("../middleware/roleMiddleware");
+const express = require("express");
+const {registerUser, loginUser} = require("../controllers/authController");
+const {protect} = require("../middleware/authMiddleware");
+const roleMiddleware = require("../middleware/roleMiddleware");
 
-const router=express.Router();
+const router = express.Router();
 
 router.post("/register", registerUser);
 router.post("/login", loginUser);
@@ -22,4 +22,4 @@ router.get("/logout", (req, res) => {
     res.json({message: "Logged out successfully"});
 });
 
-module.exports=router;
+module.exports = router;

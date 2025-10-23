@@ -1,10 +1,12 @@
-const express=require("express");
-const cors=require("cors");
+const express = require("express");
+const cors = require("cors");
 require("dotenv").config();
 
-const authRoutes=require("./src/routes/authRoutes");
+const authRoutes = require("./src/routes/authRoutes");
+const taskRoutes = require("./src/routes/taskRoutes");
+const userRoutes = require("./src/routes/userRoutes");
 
-const app=express();
+const app = express();
 
 app.use(cors({
     origin: "*",
@@ -12,10 +14,14 @@ app.use(cors({
 }));
 app.use(express.json());
 
-app.get("/api/page", (req,res) => {
+app.use("/api/auth", authRoutes);
+app.use("/api/tasks", taskRoutes);
+app.use("/api/users", userRoutes);
+
+
+
+app.get("/api/page", (req, res) => {
     res.json({message: "Backend server is running"});
 });
 
-app.use("/api/auth", authRoutes);
-
-module.exports=app;
+module.exports = app;

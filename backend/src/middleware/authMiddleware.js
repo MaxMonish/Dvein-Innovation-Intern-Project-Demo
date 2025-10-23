@@ -1,23 +1,23 @@
-const jwt=require("jsonwebtoken");
-const User=require("../models/User");
+const jwt = require("jsonwebtoken");
+const User = require("../models/User");
 
 const protect = async (req, res, next) => {
     try{
-        const token=req.headers.cookie?.split("=")[1] || req.cookies.token;
+        const token = req.headers.cookie?.split("=")[1] || req.cookies.token;
 
         if(!token){
             return res.status(401).json({message: "Not authorized, no token"});
         }
 
-        const decoded=jwt.verify(token, process.env.JWT_SECRET);
+        const decoded = jwt.verify(token, process.env.JWT_SECRET);
         
-        const user=await User.findById(decoded.id);
+        const user = await User.findById(decoded.id);
         
         if(!user){
             return res.status(401).json({message: "User not found"});
         }
 
-        req.user={
+        req.user = {
             id: user._id,
             email: user.email, 
             role: user.role
@@ -31,4 +31,4 @@ const protect = async (req, res, next) => {
     }
 };
 
-module.exports={protect};
+module.exports = {protect};
