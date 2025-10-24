@@ -14,6 +14,6 @@ router.post("/", protect, roleMiddleware(["HR"]), createTask);
 router.get("/all", protect, roleMiddleware(["HR"]), getAllTasks);
 
 router.get("/my", protect, roleMiddleware(["Employee", "HR"]), getMyTasks);
-router.get("/:taskId/status", protect, roleMiddleware(["Employee", "HR"]), updateTaskStatus);
+router.put("/:taskId/status", protect, roleMiddleware(["Employee", "HR"]), updateTaskStatus);
 
 module.exports = router;
