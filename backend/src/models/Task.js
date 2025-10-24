@@ -19,8 +19,7 @@ const taskSchema = new mongoose.Schema(
         },
         createdBy:{
             type: mongoose.Schema.Types.ObjectID,
-            ref: "User",
-            required: true
+            ref: "User"
         },
         status:{
             type: String,

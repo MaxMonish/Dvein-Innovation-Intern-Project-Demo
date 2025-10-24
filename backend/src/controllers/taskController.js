@@ -11,7 +11,7 @@ const createTask = async (req, res) => {
             return res.status(404).json({message: "Employee not found"});
         }
 
-        const task = await Task.Create({
+        const task = await Task.create({
             title,
             description, 
             assignedTo,
@@ -29,8 +29,10 @@ const getMyTasks = async (req, res) => {
     try{
         const tasks = await Task.find({assignedTo: req.user._id}).sort({createdAt: -1});
         res.json(tasks);
+        res.status(201).json({messsage: "tasks error", error: err.message});
     } catch(err) {
         res.status(500).json({messsage: "Server error", error: err.message});
+
     }
 };
 
