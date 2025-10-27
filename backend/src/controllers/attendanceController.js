@@ -6,57 +6,66 @@ const Task = require("../models/Task");
 //2.can view all employee attendance (Hr)
 //3.employee can view their attendance (employee)
 
-const hrUpdateAttendance=async (req, res)=>{
-    try {
-        const {userId}=req.body;
-        const {status}=req.body;
+const hrUpdateAttendance = async (req, res) => {
+    try { 
+        const {employeeId, status} = req.body;
 
-        const user = await Attendance.findById(userId);
-        if(!user){
-            return res.status(404).json({message:"User Not Found",err:error.message});
+        if(!employeeId || !status){
+            return res.status(400).json({message: "Employee ID and status required"});
         }
-        user.status=status;
-        await user.save();
 
-        res.json({message:"Attendance status updated"},user);
-    } catch (err) {
-        res.status(500).json({message:"server error",error:err.message});
+        const employee = await User.findById(employeeId);
+        if(!employeeId){
+            return res.status(404).json({message:"Employee Not Found"});
+        }
+
+        const today = new Date().setHours(0,0,0,0);
+        const existingRecord = await Attendance.findOne({
+            user: employeeId,
+            date: {$gte: today}
+        });
+
+        if(existingRecord){
+            return res.status(400).json({message: "Attendance already marked for this employee today"});
+        }
+
+        const record = await Attendance.create({
+            user: employeeId,
+            status,
+            date: new Date()
+        });
+        
+        res.status(201).json({message: `Attendance marked as '${status}' for ${employee.name}`, record});
+    } catch(err) {
+        res.status(500).json({message: "server error", error: err.message});
     }
 };
 
-const hrViewAttendance=async (req, res) => {
+const getAllAttendance = async (req, res) => {
     try {
-        const user=await Attendance.find()
-        .populate("date","name id status")
+        const record = await Attendance.find()
+        .populate("user","name email role")
         .sort({date: -1})
-        res.json(user);
-        res.status(404).json({message:"server error",error:err.message});
-    } catch (err) {
+
+        res.json(record);
+    } catch(err) {
         res.status(500).json({message:"server error",error:err.message});
     }    
 };
 
 const employeeAttendance = async (req, res) => {
     try {
-        const {status, date, id, name, inTime, outTime}=req.body;
-        const user=await Attendance.find(
-            name,
-            id,
-            status,
-            date,
-            inTime,
-            outTime,
-        );
-        res.json(user);
-        res.status(404).json({message:"Employee Attendance Not found",error:err.message});
-    } catch (err) {
-        res.status(500).json({message:"server error",error:err.message});
-    }
 
+        const record = await Attendance.find({user: req.user._id}).sort({date: -1});
+
+        res.json(record);
+    } catch(err) {
+        res.status(500).json({message: "server error", error: err.message});
+    }
 };
 
 module.exports={
     hrUpdateAttendance,
-    hrViewAttendance,
+    getAllAttendance,
     employeeAttendance
 };
