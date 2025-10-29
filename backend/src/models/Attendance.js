@@ -4,8 +4,8 @@ const Task = require("./Task");
 
 const attendanceSchema = mongoose.Schema(
     {
-        name:{
-            type: mongoose.Schema.Types.ObjectIDd,
+        user:{
+            type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true
         },
