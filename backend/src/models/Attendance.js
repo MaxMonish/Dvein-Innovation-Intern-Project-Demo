@@ -4,8 +4,8 @@ const Task = require("./Task");
 
 const attendanceSchema = mongoose.Schema(
     {
-        name:{
-            type: mongoose.Schema.Types.ObjectIDd,
+        user:{
+            type: mongoose.Schema.Types.ObjectId,
             ref: "User",
             required: true
         },
@@ -19,14 +19,12 @@ const attendanceSchema = mongoose.Schema(
             enum:["Present", "Absent", "Leave"],
             required:true
         },
-        inTime:{
-            type: String
-        },
-        outTime:{
-            type: String
-        }
+        inTime:{ type: String },
+        outTime:{ type: String }
     },
     {timestamps: true}
 );
+
+attendanceSchema.index({ employeeId: 1, date: 1 }, { unique: true });
 
 module.exports = mongoose.model("Attendance", attendanceSchema);

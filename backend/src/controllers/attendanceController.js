@@ -13,16 +13,35 @@ const hrUpdateAttendance = async (req, res) => {
         if(!employeeId || !status){
             return res.status(400).json({message: "Employee ID and status required"});
         }
-
-        const employee = await User.findById(employeeId);
-        if(!employeeId){
+        
+        const employee = await User.findById(employeeId)
+        // .then(() => {
+        //     console.log(employee);
+        //     res.send(employee);
+        // })
+        // .catch((err) => {
+        //     console.log(err);
+        //     res.send();
+        // });
+        if(!employee){
             return res.status(404).json({message:"Employee Not Found"});
         }
 
-        const today = new Date().setHours(0,0,0,0);
+        // const today = new Date().setHours(0,0,0,0);
+        // const existingRecord = await Attendance.findOne({
+        //     user: employeeId,
+        //     date: {$gte: today}
+        // });
+
+        const startOfDay = new Date();
+        startOfDay.setHours(0, 0, 0, 0);
+
+        const endOfDay = new Date();
+        endOfDay.setHours(23, 59, 59, 999);
+        
         const existingRecord = await Attendance.findOne({
             user: employeeId,
-            date: {$gte: today}
+            date: { $gte: startOfDay, $lte: endOfDay }
         });
 
         if(existingRecord){
