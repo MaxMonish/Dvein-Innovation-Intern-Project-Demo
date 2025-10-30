@@ -2,36 +2,22 @@ const Attendance = require("../models/Attendance");
 const User = require("../models/User");
 const Task = require("../models/Task");
 
-//1.update the attendance for employee by (Hr)
-//2.can view all employee attendance (Hr)
-//3.employee can view their attendance (employee)
-
 const hrUpdateAttendance = async (req, res) => {
     try { 
         const {employeeId, status} = req.body;
-
         if(!employeeId || !status){
             return res.status(400).json({message: "Employee ID and status required"});
         }
         
         const employee = await User.findById(employeeId)
-        // .then(() => {
-        //     console.log(employee);
-        //     res.send(employee);
-        // })
-        // .catch((err) => {
-        //     console.log(err);
-        //     res.send();
-        // });
         if(!employee){
             return res.status(404).json({message:"Employee Not Found"});
         }
 
-        // const today = new Date().setHours(0,0,0,0);
-        // const existingRecord = await Attendance.findOne({
-        //     user: employeeId,
-        //     date: {$gte: today}
-        // });
+        const validStatuses = ["Present", "Absent", "Leave"];
+        if(!validStatuses.includes(status)){
+            return res.status(400).json({message: "Invalid status "})
+        }
 
         const startOfDay = new Date();
         startOfDay.setHours(0, 0, 0, 0);

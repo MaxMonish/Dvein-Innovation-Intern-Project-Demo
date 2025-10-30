@@ -5,7 +5,8 @@ require("dotenv").config();
 const authRoutes = require("./src/routes/authRoutes");
 const taskRoutes = require("./src/routes/taskRoutes");
 const userRoutes = require("./src/routes/userRoutes");
-const attendanceRoutes=require("./src/routes/attendanceRoutes");
+const attendanceRoutes = require("./src/routes/attendanceRoutes");
+const leaveRoutes = require("./src/routes/leaveRoutes");
 
 const app = express();
 
@@ -20,6 +21,7 @@ app.use("/api/auth", authRoutes);
 app.use("/api/tasks", taskRoutes);
 app.use("/api/users", userRoutes);
 app.use("/api/attendance",attendanceRoutes);
+app.use("/api/leaves", leaveRoutes);
 
 app.get("/api/page", (req, res) => {
     res.json({message: "Backend server is running"});

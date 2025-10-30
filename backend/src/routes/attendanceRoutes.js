@@ -1,4 +1,4 @@
-    const express=require("express");
+const express=require("express");
 
 const {
     hrUpdateAttendance,
@@ -8,7 +8,7 @@ const {
 const {protect}  =require("../middleware/authMiddleware");
 const roleMiddleware = require("../middleware/roleMiddleware");
 
-const router=express.Router();
+const router = express.Router();
 
 router.post("/mark", protect, roleMiddleware(["HR"]), hrUpdateAttendance);
 router.get("/view", protect, roleMiddleware(["HR"]), getAllAttendance),

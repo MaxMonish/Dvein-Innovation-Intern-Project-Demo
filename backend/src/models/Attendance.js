@@ -1,8 +1,6 @@
 const mongoose = require("mongoose");
-const User = require("./User");
-const Task = require("./Task");
 
-const attendanceSchema = mongoose.Schema(
+const attendanceSchema = new mongoose.Schema(
     {
         user:{
             type: mongoose.Schema.Types.ObjectId,
@@ -17,6 +15,7 @@ const attendanceSchema = mongoose.Schema(
         status:{
             type: String,
             enum:["Present", "Absent", "Leave"],
+            default: "Absent",
             required:true
         },
         inTime:{ type: String },
@@ -25,6 +24,6 @@ const attendanceSchema = mongoose.Schema(
     {timestamps: true}
 );
 
-attendanceSchema.index({ employeeId: 1, date: 1 }, { unique: true });
+attendanceSchema.index({ user: 1, date: 1 }, { unique: true });
 
 module.exports = mongoose.model("Attendance", attendanceSchema);
