@@ -27,8 +27,6 @@ const createTask = async (req, res) => {
 
 const getMyTasks = async (req, res) => {
     try{
-        console.log("hello");
-        console.log("req.user: ", req.user);
         const tasks = await Task.find({assignedTo: req.user._id}).sort({createdAt: -1});
         res.json(tasks);
         res.status(201).json({messsage: "tasks error", error: err.message});
